@@ -63,7 +63,7 @@ public class ElectricServiceController extends BaseController {
      * @param:
      * @return:
      */
-    @ApiOperation(value = "增加/修改", notes = "增加/修改")
+    @ApiOperation(value = "增加/修改电器和服务范围", notes = "增加/修改电器和服务范围")
     @PostMapping("/add")
     @Transactional
     public Result add(@RequestBody Map<String, Object> entitys) {
