@@ -1,0 +1,42 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: dev
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: -1
+        max-idle: 1000
+        max-wait: -1ms
+        min-idle: 0
+    timeout: 10000ms
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+
+#logging:
+#  config: classpath:config/logback-spring.xml
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  global-config:
+    db-config:
+      capital-mode: true
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type:
+      field-strategy: not_null
+      db-type: mysql
+jwt:
+  tokenHeader: Authorization  #JWT存储的请求头
+  secret: jcfxjwt            #JWT加解密使用的密钥
+  expiration: 604800          #JWT的超期时间(60*60*24)
+  tokenHead: Bearer           #JWT负载中拿到开头
+cbs:
+  imagesPath: file:/E:/fileUpload/

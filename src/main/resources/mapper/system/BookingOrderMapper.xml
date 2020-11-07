@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqmrjb.system.mapper.BookingOrderMapper">
+
+
+    <delete id="doRemoveeIds" parameterType="long">
+        <!-- delete from sys_account where id in(7789,7790) -->
+        <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item
+            : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->
+        delete from booking_order where 1>2
+        or id in
+        <foreach collection="array"  item="arr" open="(" separator="," close=")"  >
+            #{arr}
+        </foreach>
+    </delete>
+
+
+    <select id="listBookingOrder"  parameterType="String" resultType="com.cqmrjb.system.entity.BookingOrder">
+    select
+        bo.*,sr.small_routine_name,sr.manufacturers
+    from
+        booking_order as bo
+        LEFT JOIN small_routine_info sr ON sr.appid = bo.appid
+    where
+        bo.status = 0
+
+    <if test="appid != null and appid != '' ">
+    and bo.appid= #{appid}
+    </if>
+
+    <if test="electricType != null and electricType != '' ">
+    and bo.electric_type =#{electricType}
+    </if>
+
+    <if test="orderSite != null and orderSite != '' ">
+    and bo.order_site like concat('%',#{orderSite},'%')
+    </if>
+
+    <if test="serviceType != null and serviceType != '' ">
+    and bo.service_type =#{serviceType}
+    </if>
+
+    <if test="smallRoutineName != null and smallRoutineName != '' ">
+    and sr.small_routine_name like concat('%',#{smallRoutineName},'%')
+    </if>
+
+    <if test="phone != null and phone != '' ">
+    and bo.phone=#{phone}
+    </if>
+
+    order by
+     bo.update_date
+    desc
+
+    </select>
+
+</mapper>

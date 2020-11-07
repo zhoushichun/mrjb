@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqmrjb.system.mapper.ElectricServiceMapper">
+
+
+    <delete id="doRemoveeIds" parameterType="long">
+        <!-- delete from sys_account where id in(7789,7790) -->
+        <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item
+            : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->
+        delete from
+        electric_service
+        where 1>2
+        or id in
+        <foreach collection="array" item="arr" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
+    <select id="listElectricService" parameterType="String" resultType="com.cqmrjb.system.entity.ElectricService">
+
+        select
+        es.* ,st.service_type,et.electric_type,sri.small_routine_name,sri.manufacturers,sri.appid
+        from
+        electric_service as es
+        LEFT JOIN service_type_info st ON st.id=es.service_type_id
+        LEFT JOIN electric_type_info et ON et.id=es.electric_type_id
+        LEFT JOIN electric_small_routine esr ON esr.electric_type_id=es.electric_type_id
+        LEFT JOIN small_routine_info sri ON sri.appid=esr.appid
+
+        where
+        es.status = 0 and et.status = 0 and st.status = 0 and esr.status = 0 and sri.status = 0
+
+        <if test="appid != null and appid != '' ">
+            and esr.appid= #{appid}
+        </if>
+        <if test="electricType != null and electricType != '' ">
+            and et.electric_type like concat('%',#{electricType},'%')
+        </if>
+
+        <if test="serviceType != null and serviceType != '' ">
+            and st.service_type like concat('%',#{serviceType},'%')
+        </if>
+
+        order by
+        es.update_date
+        desc
+
+
+    </select>
+</mapper>
