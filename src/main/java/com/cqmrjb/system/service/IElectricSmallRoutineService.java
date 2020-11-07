@@ -21,5 +21,5 @@ public interface IElectricSmallRoutineService extends BaseService<ElectricSmallR
 
     int deleteByAppId(String appid);
 
-    List<ElectricSmallRoutineVO> listElectricSmallRoutine(String appid, String electric);
+    List<ElectricSmallRoutine> listElectricSmallRoutine(String appid, String electric);
 }

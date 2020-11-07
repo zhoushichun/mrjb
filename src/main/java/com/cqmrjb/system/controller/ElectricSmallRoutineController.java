@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName: 前端控制器
@@ -51,11 +52,29 @@ public class ElectricSmallRoutineController extends BaseController {
         if (entity.getSize() == 0) {
             entity.setSize(10);
         }
-
         PageHelper.startPage(entity.getCurrent(), entity.getSize());
-        List<ElectricSmallRoutineVO> list = electricSmallRoutineService.listElectricSmallRoutine(entity.getAppid(), entity.getElectricType());
-
-        return Result.SUCCESS(new PageInfo<>(list));
+        List<ElectricSmallRoutine> list = electricSmallRoutineService.listElectricSmallRoutine(entity.getAppid(), entity.getElectricType());
+        //把查询到的数据 按照appid分组
+        Map<String, List<ElectricSmallRoutine>> maps = list.stream().collect(Collectors.groupingBy(e -> e.getAppid()));
+        //然后再对map处理，这样就方便取出自己要的数据
+        ArrayList<Object> objects = new ArrayList<>();
+        for (Map.Entry<String, List<ElectricSmallRoutine>> entry : maps.entrySet()) {
+            List<Object> typeId = new ArrayList<>();
+            List<Object> type = new ArrayList<>();
+            Map<String, Object> map = new HashMap<>();
+            List<ElectricSmallRoutine> value = entry.getValue();
+            for (ElectricSmallRoutine electricSmallRoutine : value) {
+                typeId.add(electricSmallRoutine.getElectricTypeId());
+                type.add(electricSmallRoutine.getElectricType());
+                map.put("appid", electricSmallRoutine.getAppid());
+                map.put("SmallRoutineName", electricSmallRoutine.getSmallRoutineName());
+                map.put("Manufacturers", electricSmallRoutine.getManufacturers());
+            }
+            map.put("typeId", typeId);
+            map.put("type", type);
+            objects.add(map);
+        }
+        return Result.SUCCESS(new PageInfo<>(objects));
     }
 
     /**

@@ -36,7 +36,7 @@ public class ElectricSmallRoutineServiceImpl extends BaseServiceImpl<ElectricSma
     }
 
     @Override
-    public List<ElectricSmallRoutineVO> listElectricSmallRoutine(String appid, String electric) {
+    public List<ElectricSmallRoutine> listElectricSmallRoutine(String appid, String electric) {
         return electricSmallRoutineMapper.listElectricSmallRoutine(appid,electric);
     }
 }

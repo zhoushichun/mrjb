@@ -29,7 +29,7 @@ public class ElectricService extends DataEntity<ElectricService> {
     @ApiModelProperty(value = "电器ID")
     private Long electricTypeId;
 
-    @TableField(exist = false)
+
     @ApiModelProperty(value = "appid")
     private String appid;
 

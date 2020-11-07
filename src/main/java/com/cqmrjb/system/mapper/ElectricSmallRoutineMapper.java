@@ -31,5 +31,5 @@ public interface ElectricSmallRoutineMapper extends BaseMapper<ElectricSmallRout
     boolean doRemoveeIds(long[] arr);
 
 
-    List<ElectricSmallRoutineVO> listElectricSmallRoutine(@Param("appid") String appid, @Param("electric")String electric);
+    List<ElectricSmallRoutine> listElectricSmallRoutine(@Param("appid") String appid, @Param("electric")String electric);
 }

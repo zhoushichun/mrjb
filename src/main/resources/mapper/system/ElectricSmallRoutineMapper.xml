@@ -15,9 +15,9 @@
             #{arr}
         </foreach>
     </delete>
-    <select id="listElectricSmallRoutine" parameterType="String" resultType="com.cqmrjb.system.entity.ElectricSmallRoutineVO">
+    <select id="listElectricSmallRoutine" parameterType="String" resultType="com.cqmrjb.system.entity.ElectricSmallRoutine">
         select
-        GROUP_CONCAT(es.electric_type_id SEPARATOR ',')as electricTypeId,sr.manufacturers,GROUP_CONCAT(et.electric_type SEPARATOR ',') as electricType,es.appid,es.id,es.`status`,es.update_date,sr.small_routine_name
+        es.* ,sr.small_routine_name,sr.manufacturers,et.electric_type
         from
         electric_small_routine as es
         LEFT JOIN electric_type_info et ON et.id=es.electric_type_id
@@ -32,11 +32,35 @@
             and et.electric_type like concat('%',#{electric},'%')
         </if>
 
-        group by es.appid
+
 
         order by
         es.update_date
         desc
+
+
+
+        <!--select-->
+        <!--GROUP_CONCAT(es.electric_type_id SEPARATOR ',')as electricTypeId,sr.manufacturers,GROUP_CONCAT(et.electric_type SEPARATOR ',') as electricType,es.appid,es.id,es.`status`,es.update_date,sr.small_routine_name-->
+        <!--from-->
+        <!--electric_small_routine as es-->
+        <!--LEFT JOIN electric_type_info et ON et.id=es.electric_type_id-->
+        <!--LEFT JOIN small_routine_info sr ON sr.appid=es.appid-->
+        <!--where-->
+        <!--es.status = 0 and et.status = 0 and sr.status = 0-->
+
+        <!--<if test="appid != null and appid != '' ">-->
+            <!--and es.appid= #{appid}-->
+        <!--</if>-->
+        <!--<if test="electric != null and electric != '' ">-->
+            <!--and et.electric_type like concat('%',#{electric},'%')-->
+        <!--</if>-->
+
+        <!--group by es.appid-->
+
+        <!--order by-->
+        <!--es.update_date-->
+        <!--desc-->
 
     </select>
 </mapper>
